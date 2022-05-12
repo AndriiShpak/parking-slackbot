@@ -1,7 +1,9 @@
 const { Client } = require("pg");
 
+const connection = `${process.env.DATABASE_URL}?sslmode=require`
+
 async function createTables() {
-  const client = new Client(process.env.DATABASE_URL);
+  const client = new Client(connection);
   await client.connect();
   const now = await client.query("SELECT NOW()");
   await client.end();
@@ -10,7 +12,7 @@ async function createTables() {
 }
 
 async function clientDemo() {
-  const client = new Client(process.env.DATABASE_URL);
+  const client = new Client(connection);
   await client.connect();
   const now = await client.query("SELECT NOW()");
   await client.end();
