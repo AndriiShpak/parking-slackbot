@@ -1,4 +1,6 @@
+require('dotenv').config();
 const { App } = require('@slack/bolt');
+const { clientDemo } = require('./db-access');
 
 const parkingStore = {
   availablePlaces: [1, 2, 3, 4, 5],
@@ -6,10 +8,8 @@ const parkingStore = {
 };
 
 const app = new App({
-  // signingSecret: process.env.SLACK_SIGNING_SECRET,
-  // token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: 'b8d16c1589e47a751a24f69240eb612c',
-  token: 'xoxb-139265830165-3497518092881-Fz5AMFVusBnrG4LBSoUnfnwg',
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+  token: process.env.SLACK_BOT_TOKEN,
 });
 
 const UNKNOWN_ERROR = 'Unknown error occurred.'
@@ -73,6 +73,9 @@ app.command('/park', async ({ command, ack, respond }) => {
     port = 8000;
   }
   await app.start(port);
+
+  const clientResult = await clientDemo();
+  console.log("DB connection works, Time with client: " + clientResult.rows[0]["now"]);
 
   console.log('⚡️ Bolt app is running!');
 })();
