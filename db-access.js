@@ -17,7 +17,7 @@ async function createTables() {
 async function clientDemo() {
   const client = new Client({
     connectionString,
-    ssl: { rejectUnauthorized: false }
+    ...(process.env.IS_LOCAL ? {} : { ssl: { rejectUnauthorized: false } })
   });
   await client.connect();
   const now = await client.query("SELECT NOW()");
