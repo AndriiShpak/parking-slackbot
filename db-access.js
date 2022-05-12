@@ -1,9 +1,12 @@
 const { Client } = require("pg");
 
-const connection = `${process.env.DATABASE_URL}?sslmode=require`
+const connectionString = `${process.env.DATABASE_URL}?sslmode=require`
 
 async function createTables() {
-  const client = new Client(connection);
+  const client = new Client({
+    connectionString,
+    ssl: { rejectUnauthorized: false }
+  });
   await client.connect();
   const now = await client.query("SELECT NOW()");
   await client.end();
@@ -12,7 +15,10 @@ async function createTables() {
 }
 
 async function clientDemo() {
-  const client = new Client(connection);
+  const client = new Client({
+    connectionString,
+    ssl: { rejectUnauthorized: false }
+  });
   await client.connect();
   const now = await client.query("SELECT NOW()");
   await client.end();
