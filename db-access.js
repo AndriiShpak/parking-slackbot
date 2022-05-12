@@ -1,6 +1,6 @@
 const { Client } = require("pg");
 
-const connectionString = `${process.env.DATABASE_URL}?sslmode=require`
+const connectionString = process.env.DATABASE_URL;
 
 async function createTables() {
   const client = new Client({
