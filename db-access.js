@@ -22,14 +22,14 @@ function getDayStart() {
 async function setupDb() {
   await executeQuery(`CREATE TABLE IF NOT EXISTS park_statements (
     id SERIAL,
-    date timestamp without time zone,
+    date timestamp with time zone,
     user_id varchar(32) NULL,
     parking_slot smallint NOT NULL
   )`);
 
   await executeQuery(`CREATE TABLE IF NOT EXISTS park_blames (
     id SERIAL,
-    date timestamp without time zone,
+    date timestamp with time zone,
     car_plate varchar(32),
     parking_slot smallint,
     created_by varchar(32)
