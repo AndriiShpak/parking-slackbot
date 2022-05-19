@@ -163,7 +163,7 @@ app.command('/blame_nest', async ({ command, ack, respond }) => {
     const parkSlot = +parkSlotText;
     const normalizedCarPlate = (carPlate || '').replace(/ /g, '').toUpperCase();
 
-    if (typeof parkSlot !== 'number') {
+    if (!parkSlot || typeof parkSlot !== 'number') {
       error = `Я не розумію яке паркомісце ти написав. Треба передати номер місця після команди, наприклад "/blame_nest 12 BC1212HE". А ти написав: ${command.text}.`
     } else if (!availablePlaces.includes(parkSlot)) {
       error = `Такого паркомісця немає у дозволених. Доступні місця: ${availablePlaces.join(', ')}. А ти написав: ${command.text}.`;
