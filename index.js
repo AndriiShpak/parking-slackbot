@@ -176,6 +176,15 @@ app.command('/blame_nest', async ({ command, ack, respond }) => {
       }
     }
 
+    if (error) {
+      await respond({
+        response_type: 'ephemeral',
+        text: error
+      });
+
+      return;
+    }
+
     await addBlameStatement(normalizedCarPlate, parkSlot, command.user_id);
 
     await respond({
