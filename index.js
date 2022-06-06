@@ -162,6 +162,7 @@ app.command('/blame_nest', async ({ command, ack, respond }) => {
     let [parkSlotText, carPlate] = command.text.split(' ');
     const parkSlot = +parkSlotText;
     const normalizedCarPlate = (carPlate || '').replace(/ /g, '').toUpperCase();
+    let error;
 
     if (!parkSlot || typeof parkSlot !== 'number') {
       error = `Я не розумію яке паркомісце ти написав. Треба передати номер місця після команди, наприклад "/blame_nest 12 BC1212HE". А ти написав: ${command.text}.`
