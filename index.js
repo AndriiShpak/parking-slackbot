@@ -9,6 +9,7 @@ const {
   addBlameStatement,
   getAllBlames
  } = require('./db-access');
+const { ukranianToEnglishCharsInPlate } = require('./language-utils');
 
 const availablePlaces = process.env.AVAILABLE_SLOTS.split(',').map(place => +place);
 const parkingSchema = process.env.IMAGE_URL;
@@ -206,11 +207,33 @@ app.command('/all_nest_blames', async ({ command, ack, respond }) => {
   await ack();
 
   try {
-    const blames = await getAllBlames();
+    let blames = await getAllBlames();
     let blamesText;
     if (!blames.length) {
       blamesText = 'Ого! Ніхто ще нікого не звинуватив'
     } else {
+
+      // Making sure that 'B' in english and 'B' in ukranian add up to 1 total
+      blames = blames.reduce((resultBlames, currentBlameItem) => {
+        let carPlate = ukranianToEnglishCharsInPlate(currentBlameItem.carPlate);
+
+        let sameCarPlateItem = resultBlames.find(item => item.carPlate === carPlate);
+
+        if (sameCarPlateItem) {
+          sameCarPlateItem.count = +sameCarPlateItem.count + +currentBlameItem.count;
+        } else {
+          resultBlames.push({
+            carPlate,
+            count: currentBlameItem.count
+          })
+        }
+
+        return resultBlames;
+      }, []);
+
+      blames = blames.sort((blame1, blame2) => +blame2.count - +blame1.count);
+
+
       blamesText = blames.map(blame => `${blame.carPlate}: ${blame.count}`).join('\n')
     }
 

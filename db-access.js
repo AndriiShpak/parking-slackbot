@@ -85,7 +85,7 @@ async function addBlameStatement(carPlate, parkingSlot, whoBlamed) {
 }
 
 async function getAllBlames() {
-  const result = await executeQuery(`SELECT p.car_plate, count(distinct Date(p.date)) as count FROM park_blames p GROUP by p.car_plate ORDER BY count(distinct Date(p.date)) DESC`);
+  const result = await executeQuery(`SELECT p.car_plate, count(distinct Date(p.date)) as count FROM park_blames p GROUP by p.car_plate`);
 
   return result.rows.map(user => ({
     carPlate: user['car_plate'],
