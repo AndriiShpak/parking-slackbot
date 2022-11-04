@@ -17,6 +17,16 @@ const parkingSchema = process.env.IMAGE_URL;
 const app = new App({
   signingSecret: process.env.SLACK_SIGNING_SECRET,
   token: process.env.SLACK_BOT_TOKEN,
+  customRoutes: [
+    {
+      path: '/health-check',
+      method: ['GET'],
+      handler: (_, res) => {
+        res.writeHead(200);
+        res.end('Health check success');
+      },
+    },
+  ],
 });
 
 const UNKNOWN_ERROR = 'Сталась невідома помилка, напиши про неї адміну';
